@@ -8,12 +8,18 @@ mount /dev/block/bootdevice/by-name/cache /cache
 
 echo "Checking if parted exists"
 if [ ! -f /cache/parted ]; then
-	echo "/cache/parted does not exist."
+	echo "/cache/parted does not exist. Grab parted first before continuing."
 	exit 0
 fi
 
-echo "Checking if this is a DVT2 partition table"
+echo "Checking if system_a exists"
 if [ -f /dev/block/bootdevice/by-name/system_a ]; then
+	echo "This partition table is already upgraded fool"
+	exit 0
+fi
+
+echo "Checking if emr exists"
+if [ -f /dev/block/bootdevice/by-name/emr ]; then
 	echo "This partition table is already upgraded fool"
 	exit 0
 fi
