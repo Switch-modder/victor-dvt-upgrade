@@ -66,7 +66,7 @@ BIG_DISPLAY "Aboot..."
 BIG_DISPLAY "Modem..."
 /system/busybox dd if=/system/modem.img of=/dev/block/bootdevice/by-name/modem
 echo "Rename partitions"
-echo "system to system_b"
+echo "system to recoveryfs"
 SMALL_DISPLAY "system to recoveryfs"
 /system/parted /dev/block/mmcblk0 name 21 recoveryfs
 SMALL_DISPLAY "userdata to system_a"
@@ -75,7 +75,7 @@ echo "userdata to system_a"
 echo "boot to boot_a"
 SMALL_DISPLAY "boot to boot_a"
 /system/parted /dev/block/mmcblk0 name 20 boot_a
-echo "persist to boot_b"
+echo "persist to recoveryfs"
 SMALL_DISPLAY "persist to recovery"
 /system/parted /dev/block/mmcblk0 name 22 recovery
 echo "cache to emr"
