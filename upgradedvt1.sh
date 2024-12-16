@@ -41,11 +41,12 @@ curl -o /system/aboot.img http://wire.my.to:81/dvt2aboot.img
 SMALL_DISPLAY "Modem"
 echo "Modem"
 curl -o /system/modem.img http://wire.my.to:81/dvt2modem.img
-echo "Erasing Switchboard"
-/system/busybox dd if=/dev/zero of=/dev/block/bootdevice/by-name/sbl1bak count=1024
+SMALL_DISPLAY "Parted"
 echo "Get parted"
 curl -o /system/parted http://wire.my.to:81/parted
 chmod +rwx /system/parted
+echo "Erasing Switchboard"
+/system/busybox dd if=/dev/zero of=/dev/block/bootdevice/by-name/sbl1bak count=1024
 echo "Kill processes"
 lsof | grep /data | /system/busybox awk '{print $2}' | xargs kill
 sleep 5
@@ -66,8 +67,8 @@ BIG_DISPLAY "Modem..."
 /system/busybox dd if=/system/modem.img of=/dev/block/bootdevice/by-name/modem
 echo "Rename partitions"
 echo "system to system_b"
-SMALL_DISPLAY "system to system_b"
-/system/parted /dev/block/mmcblk0 name 21 system_b
+SMALL_DISPLAY "system to recoveryfs"
+/system/parted /dev/block/mmcblk0 name 21 recoveryfs
 SMALL_DISPLAY "userdata to system_a"
 echo "userdata to system_a"
 /system/parted /dev/block/mmcblk0 name 28 system_a
@@ -75,8 +76,8 @@ echo "boot to boot_a"
 SMALL_DISPLAY "boot to boot_a"
 /system/parted /dev/block/mmcblk0 name 20 boot_a
 echo "persist to boot_b"
-SMALL_DISPLAY "persist to boot_b"
-/system/parted /dev/block/mmcblk0 name 22 boot_b
+SMALL_DISPLAY "persist to recovery"
+/system/parted /dev/block/mmcblk0 name 22 recovery
 echo "cache to emr"
 SMALL_DISPLAY "cache to emr"
 /system/parted /dev/block/mmcblk0 name 23 emr
