@@ -33,12 +33,6 @@ echo "Get parted"
 curl -o /system/dvtupgrade/parted http://wire.my.to:81/parted
 chmod +rwx /system/dvtupgrade/parted
 echo "Curl/Flash..."
-SMALL_DISPLAY "System_a" #The main VicOS
-echo "System_a"
-curl -o /system/dvtupgrade/sysfs.img.gz http://wire.my.to:81/dvt2cfwsystem.img.gz
-SMALL_DISPLAY "Boot_a" #The thing to boot VicOS
-echo "Boot_a"
-curl -o /system/dvtupgrade/boot.img.gz http://wire.my.to:81/dvt2cfwboot.img.gz
 SMALL_DISPLAY "EMR" #Calibration data
 echo "EMR"
 curl -o /system/dvtupgrade/emr.img http://wire.my.to:81/006emr.img
