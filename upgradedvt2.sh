@@ -17,6 +17,7 @@ if [ ! -f "$PARTED_FILE_PATH" ]; then
     # Use curl to download the file
     if command -v curl >/dev/null 2>&1; then
         curl -o "$PARTED_FILE_PATH" "$PARTED_DOWNLOAD_LINK"
+	chmod +x "$PARTED_FILE_PATH"
     else
         echo "Error: curl is not installed. Please install it to proceed."
         exit 1
@@ -58,18 +59,18 @@ umount -f /factory
 echo "Curl/Flash..."
 echo 2 1 w Upgrading | /system/bin/display > /dev/null
 echo "System"
-curl -o - /dvtupgrade/recfs.img.gz http://wire.my.to:81/dvt2cfwsystem.img.gz
+curl -o /dvtupgrade/recfs.img.gz http://wire.my.to:81/dvt2cfwsystem.img.gz
 echo "Boot"
-curl -o - /dvtupgrade/rec.img.gz http://wire.my.to:81/dvt2cfwboot.img.gz
+curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/dvt2cfwboot.img.gz
 echo "EMR"
-curl -L /dvtupgrade/emr.img http://wire.my.to:81/006emr.img
+curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emr.img
 echo "OEM"
-curl -L /dvtupgrade/oem.img http://wire.my.to:81/006oem.img
+curl -L -o /dvtupgrade/oem.img http://wire.my.to:81/006oem.img
 
 echo "System"
-gunzip -c "/dvtupgrade/recfs.img" > "/dev/block/bootdevice/by-name/templabel"
+gunzip -c "/dvtupgrade/recfs.img.gz" > "/dev/block/bootdevice/by-name/templabel"
 echo "Boot"
-gunzip -c "/dvtupgrade/rec.img" > "/dev/block/bootdevice/by-name/boot_b"
+gunzip -c "/dvtupgrade/rec.img.gz" > "/dev/block/bootdevice/by-name/boot_b"
 echo "EMR"
 dd if=/dvtupgrade/emr.img of=/dev/block/bootdevice/by-name/recoveryfs
 echo "OEM"
