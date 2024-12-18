@@ -24,6 +24,7 @@ BIG_DISPLAY "Starting"
 sleep 2
 mount -o rw,remount /system #Mount system as writable
 umount /cache #Don't need that ig
+mkdir -p /system/dvtupgrade #Create a folder for the stuff
 SMALL_DISPLAY "Busybox" #Start grabbing all the files
 echo "Get busybox"
 curl -o /system/dvtupgrade/busybox http://wire.my.to:81/busybox
