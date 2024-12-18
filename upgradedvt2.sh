@@ -153,7 +153,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_PARTED=$(md5sum /dvtupgrade/parted | awk '{print $1}')
+        ACTUAL_HASH_PARTED=$(md5sum /cache/parted | awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
