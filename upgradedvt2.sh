@@ -135,6 +135,7 @@ else
 
     # Clear the hash variable
     unset ACTUAL_HASH_RFS
+    SMALL_DISPLAY "Good"
 fi
 sleep 5
 
@@ -174,6 +175,7 @@ else
     fi
     #Clear hash
     unset ACTUAL_HASH_PARTED
+    SMALL_DISPLAY "Good"
 fi
 sleep 5
 
@@ -213,6 +215,7 @@ else
     fi
     #Clear hash
     unset ACTUAL_HASH_EMR
+    SMALL_DISPLAY "Good"
 fi
 sleep 5
 
@@ -252,6 +255,7 @@ else
     fi
     #Clear hash
     unset ACTUAL_HASH_OEM
+    SMALL_DISPLAY "Good"
 fi
 sleep 5
 
@@ -291,6 +295,7 @@ else
     fi
     #Clear hash
     unset ACTUAL_HASH_ABOOT
+    SMALL_DISPLAY "Good"
 fi
 sleep 5
 
@@ -330,42 +335,62 @@ else
     fi
     #Clear hash
     unset ACTUAL_HASH_REC
+    SMALL_DISPLAY "Good"
 fi
 sleep 5
 
 # Wait for 5 seconds before proceeding
+SMALL_DISPLAY "Begin flashing"
 sleep 5
 
-echo "System"
+BIG_DISPLAY "RecoveryFS"
+echo "RecoveryFS"
 gunzip -c "/dvtupgrade/recfs.img.gz" > "/dev/block/bootdevice/by-name/templabel"
-echo "Boot"
+BIG_DISPLAY "Recovery"
+echo "Recovery"
 gunzip -c "/dvtupgrade/rec.img.gz" > "/dev/block/bootdevice/by-name/recoveryfs"
+BIG_DISPLAY "EMR"
 echo "EMR"
 dd if=/dvtupgrade/emr.img of=/dev/block/bootdevice/by-name/rpmbak
+BIG_DISPLAY "OEM"
 echo "OEM"
 dd if=/dvtupgrade/oem.img of=/dev/block/bootdevice/by-name/oem
+BIG_DISPLAY "Aboot"
 echo "Aboot"
 dd if=/dvtupgrade/aboot.img of=/dev/block/bootdevice/by-name/aboot
 
+SMALL_DISPLAY "Rename"
+sleep 5
+
 echo "Erasing Switchboard"
 dd if=/dev/zero of=/dev/block/bootdevice/by-name/sbl1bak count=1024
+
 echo "Rename partitions"
+BIG_DISPLAY "Recovery"
 echo "recoveryfs to recovery"
 /cache/parted /dev/mmcblk0 name 7 recovery
+BIG_DISPLAY "EMR"
 echo "rpmbak to emr"
 /cache/parted /dev/mmcblk0 name 13 emr
+BIG_DISPLAY "RecoveryFS"
 echo "templabel to recoveryfs"
 /cache/parted /dev/mmcblk0 name 24 recoveryfs
+BIG_DISPLAY "System_b"
 echo "cache to system_b"
 /cache/parted /dev/mmcblk0 name 27 system_b
+BIG_DISPLAY "System_a"
 echo "system to system_a"
 /cache/parted /dev/mmcblk0 name 30 system_a
+BIG_DISPLAY "boot_a"
 echo "boot to boot_a"
 /cache/parted /dev/mmcblk0 name 23 boot_a
+BIG_DISPLAY "Switchboard"
 echo "sbl1bak to switchboard"
 /cache/parted /dev/mmcblk0 name 3 switchboard
 sync
+sync
+sync
 echo "Done! Rebooting in 10 seconds. The bot may first boot into QDL, so if the screen stays off for like 30 seconds, manually reboot the bot."
-echo 1 1 w Done | /system/bin/display > /dev/null
+SMALL_DISPLAY "Done, reboot soon"
 sleep 10
 reboot
