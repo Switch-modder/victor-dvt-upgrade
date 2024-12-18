@@ -66,25 +66,31 @@ echo "EMR"
 curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emr.img
 echo "OEM"
 curl -L -o /dvtupgrade/oem.img http://wire.my.to:81/006oem.img
+echo "Aboot"
+curl -o /dvtupgrade/aboot.img http://wire.my.to:81/ankidev-nosigning.
 
 echo "System"
 gunzip -c "/dvtupgrade/recfs.img.gz" > "/dev/block/bootdevice/by-name/templabel"
 echo "Boot"
-gunzip -c "/dvtupgrade/rec.img.gz" > "/dev/block/bootdevice/by-name/boot_b"
+gunzip -c "/dvtupgrade/rec.img.gz" > "/dev/block/bootdevice/by-name/recoveryfs"
 echo "EMR"
-dd if=/dvtupgrade/emr.img of=/dev/block/bootdevice/by-name/recoveryfs
+dd if=/dvtupgrade/emr.img of=/dev/block/bootdevice/by-name/rpmbak
 echo "OEM"
 dd if=/dvtupgrade/oem.img of=/dev/block/bootdevice/by-name/oem
+echo "Aboot"
+dd if=/dvtupgrade/aboot.img of=/dev/block/bootdevice/by-name/aboot
 
 echo "Erasing Switchboard"
 dd if=/dev/zero of=/dev/block/bootdevice/by-name/sbl1bak count=1024
 echo "Rename partitions"
-echo "recoveryfs to emr"
-/cache/parted /dev/mmcblk0 name 7 emr
+echo "recoveryfs to recovery"
+/cache/parted /dev/mmcblk0 name 7 recovery
+echo "rpmbak to emr"
+/cache/parted /dev/mmcblk0 name 13 emr
 echo "templabel to recoveryfs"
 /cache/parted /dev/mmcblk0 name 24 recoveryfs
-echo "boot_b to recovery"
-/cache/parted /dev/mmcblk0 name 26 recovery
+echo "cache to system_b"
+/cache/parted /dev/mmcblk0 name 27 system_b
 echo "system to system_a"
 /cache/parted /dev/mmcblk0 name 30 system_a
 echo "boot to boot_a"
