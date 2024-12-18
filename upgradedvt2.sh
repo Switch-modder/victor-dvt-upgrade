@@ -50,6 +50,19 @@ if [ -f /dev/block/bootdevice/by-name/emr ]; then
 	exit 0
 fi
 
+
+BIG_DISPLAY()
+{
+echo 2 1 w $1 | /system/bin/display > /dev/null
+}
+
+SMALL_DISPLAY()
+{
+echo 1 1 w $1 | /system/bin/display > /dev/null
+}
+
+BIG_DISPLAY "Starting"
+sleep 2
 mkdir -p /dvtupgrade
 echo "Stop anki-robot.target"
 systemctl stop anki-robot.target
@@ -57,17 +70,58 @@ echo "Remove anki"
 rm -rf /anki
 umount -f /factory
 echo "Curl/Flash..."
-echo 2 1 w Upgrading | /system/bin/display > /dev/null
-echo "System"
+BIG_DISPLAY "Recoveryfs"
+echo "Recoveryfs"
 curl -o /dvtupgrade/recfs.img.gz http://wire.my.to:81/dumps/devrecoveryfs.img.gz
+BIG_DISPLAY "Recovery"
 echo "Boot"
 curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/dumps/devrecovery.img.gz
+BIG_DISPLAY "EMR"
 echo "EMR"
 curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emr.img
+BIG_DISPLAY "OEM"
 echo "OEM"
 curl -L -o /dvtupgrade/oem.img http://wire.my.to:81/006oem.img
+BIG_DISPLAY "Aboot"
 echo "Aboot"
 curl -o /dvtupgrade/aboot.img http://wire.my.to:81/ankidev-nosigning.
+
+echo "Checking if recoveryfs exists"
+
+# Define the expected hash
+EXPECTED_HASH_RFS="8d3e92b5aed4b26fbb6b8554030fb5b0"
+
+# Check if the file exists
+if [ ! -f /system/dvtupgrade/recoveryfs.img.gz ]; then
+    echo "recoveryfs does not exist. Confirm recoveryfs is on the server or download it to your bot manually."
+    exit 0
+else
+    echo "recoveryfs is found. Proceeding to check the file hash."
+
+    # Compute the hash of the file
+    if command -v md5sum >/dev/null 2>&1; then
+        ACTUAL_HASH_RFS=$(md5sum /system/dvtupgrade/recoveryfs.img.gz | awk '{print $1}')
+    else
+        echo "Error: md5sum command not found. Please install it to proceed."
+        exit 1
+    fi
+
+    # Compare the hash values
+    if [ "$ACTUAL_HASH_RFS" = "$EXPECTED_HASH_RFS" ]; then
+        echo "File hash matches the expected value."
+    else
+        echo "Error: File hash does NOT match the expected value!"
+        echo "Expected: $EXPECTED_HASH_RFS"
+        echo "Actual:   $ACTUAL_HASH_RFS"
+        exit 1
+    fi
+
+    # Clear the hash variable
+    unset ACTUAL_HASH_RFS
+fi
+
+# Wait for 5 seconds before proceeding
+sleep 5
 
 echo "System"
 gunzip -c "/dvtupgrade/recfs.img.gz" > "/dev/block/bootdevice/by-name/templabel"
@@ -92,11 +146,11 @@ echo "templabel to recoveryfs"
 echo "cache to system_b"
 /cache/parted /dev/mmcblk0 name 27 system_b
 echo "system to system_a"
-/system_b/parted /dev/mmcblk0 name 30 system_a
+/cache/parted /dev/mmcblk0 name 30 system_a
 echo "boot to boot_a"
-/system_b/parted /dev/mmcblk0 name 23 boot_a
+/cache/parted /dev/mmcblk0 name 23 boot_a
 echo "sbl1bak to switchboard"
-/system_b/parted /dev/mmcblk0 name 3 switchboard
+/cache/parted /dev/mmcblk0 name 3 switchboard
 sync
 echo "Done! Rebooting in 10 seconds. The bot may first boot into QDL, so if the screen stays off for like 30 seconds, manually reboot the bot."
 echo 1 1 w Done | /system/bin/display > /dev/null
