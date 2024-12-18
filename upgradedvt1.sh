@@ -264,7 +264,7 @@ sleep 5
 SMALL_DISPLAY "Check recoveryfs"
 echo "Checking if recoveryfs exists"
 # Define the expected hash
-EXPECTED_HASH_RFS="8d3e92b5aed4b26fbb6b8554030fb5b0 "
+EXPECTED_HASH_RFS="8d3e92b5aed4b26fbb6b8554030fb5b0"
 
 # Check if the file exists
 if [ ! -f /system/dvtupgrade/recoveryfs.img.gz ]; then
