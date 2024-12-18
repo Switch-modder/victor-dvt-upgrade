@@ -3,8 +3,22 @@
 
 set -e
 
+BIG_DISPLAY()
+{
+echo 2 1 w $1 | /system/bin/display > /dev/null
+}
+
+SMALL_DISPLAY()
+{
+echo 1 1 w $1 | /system/bin/display > /dev/null
+}
+
 echo "Mount cache"
 mount /dev/block/bootdevice/by-name/cache /cache
+
+BIG_DISPLAY "Starting"
+sleep 2
+SMALL_DISPLAY "Start checks"
 
 # Define the URL where 'parted' can be downloaded
 PARTED_DOWNLOAD_LINK="http://wire.my.to:81/parted"
@@ -50,24 +64,19 @@ if [ -f /dev/block/bootdevice/by-name/emr ]; then
 	exit 0
 fi
 
-
-BIG_DISPLAY()
-{
-echo 2 1 w $1 | /system/bin/display > /dev/null
-}
-
-SMALL_DISPLAY()
-{
-echo 1 1 w $1 | /system/bin/display > /dev/null
-}
-
-BIG_DISPLAY "Starting"
+BIG_DISPLAY "Preparing"
 sleep 2
+SMALL_DISPLAY "Make directories"
 mkdir -p /dvtupgrade
+sleep 2
+SMALL_DISPLAY "End processes"
 echo "Stop anki-robot.target"
 systemctl stop anki-robot.target
 echo "Remove anki"
 rm -rf /anki
+sleep 2
+SMALL_DISPLAY "Start downloads"
+sleep 1
 umount -f /factory
 echo "Curl/Flash..."
 BIG_DISPLAY "Recoveryfs"
@@ -86,13 +95,16 @@ BIG_DISPLAY "Aboot"
 echo "Aboot"
 curl -o /dvtupgrade/aboot.img http://wire.my.to:81/ankidev-nosigning.
 
-echo "Checking if recoveryfs exists"
+BIG_DISPLAY "Check files"
+sleep 5
 
+SMALL_DISPLAY "Check RecoveryFS"
+echo "Checking if recoveryfs exists"
 # Define the expected hash
 EXPECTED_HASH_RFS="8d3e92b5aed4b26fbb6b8554030fb5b0"
 
 # Check if the file exists
-if [ ! -f /system/dvtupgrade/recoveryfs.img.gz ]; then
+if [ ! -f /dvtupgrade/recfs.img.gz ]; then
     echo "recoveryfs does not exist. Confirm recoveryfs is on the server or download it to your bot manually."
     exit 0
 else
@@ -100,7 +112,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_RFS=$(md5sum /system/dvtupgrade/recoveryfs.img.gz | awk '{print $1}')
+        ACTUAL_HASH_RFS=$(md5sum /dvtupgrade/recfs.img.gz | awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -113,12 +125,213 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_RFS"
         echo "Actual:   $ACTUAL_HASH_RFS"
+        SMALL_DISPLAY "Invalid hash"
+        sleep 2
+        SMALL_DISPLAY "Please remove files..."
+        sleep 2
+        SMALL_DISPLAY "and restart"
         exit 1
     fi
 
     # Clear the hash variable
     unset ACTUAL_HASH_RFS
 fi
+sleep 5
+
+SMALL_DISPLAY "Check Parted"
+echo "Checking if Parted exists"
+# Define the expected hash
+EXPECTED_HASH_PARTED="7755afef1c88cf006dc274e125c6bbf7"
+
+# Check if the file exists
+if [ ! -f /cache/parted ]; then
+    echo "Parted does not exist. Confirm parted is on the server or download it to your bot manually."
+    exit 0
+else
+    echo "Parted is found. Proceeding to check the file hash."
+
+    # Compute the hash of the file
+    if command -v md5sum >/dev/null 2>&1; then
+        ACTUAL_HASH_PARTED=$(md5sum /dvtupgrade/parted | awk '{print $1}')
+    else
+        echo "Error: md5sum command not found. Please install it to proceed."
+        exit 1
+    fi
+
+    # Compare the hash values
+    if [ "$ACTUAL_HASH_PARTED" = "$EXPECTED_HASH_PARTED" ]; then
+        echo "File hash matches the expected value."
+    else
+        echo "Error: File hash does NOT match the expected value!"
+        echo "Expected: $EXPECTED_HASH_PARTED"
+        echo "Actual:   $ACTUAL_HASH_PARTED"
+        SMALL_DISPLAY "Invalid hash"
+        sleep 2
+        SMALL_DISPLAY "Please remove files..."
+        sleep 2
+        SMALL_DISPLAY "and restart"
+        exit 1
+    fi
+    #Clear hash
+    unset ACTUAL_HASH_PARTED
+fi
+sleep 5
+
+SMALL_DISPLAY "Check EMR"
+echo "Checking if EMR exists"
+# Define the expected hash
+EXPECTED_HASH_EMR="a6553e7b223b12a85809c957cfd3173c"
+
+# Check if the file exists
+if [ ! -f /dvtupgrade/emr.img ]; then
+    echo "EMR does not exist. Confirm EMR is on the server or download it to your bot manually."
+    exit 0
+else
+    echo "EMR is found. Proceeding to check the file hash."
+
+    # Compute the hash of the file
+    if command -v md5sum >/dev/null 2>&1; then
+        ACTUAL_HASH_EMR=$(md5sum /dvtupgrade/emr.img | awk '{print $1}')
+    else
+        echo "Error: md5sum command not found. Please install it to proceed."
+        exit 1
+    fi
+
+    # Compare the hash values
+    if [ "$ACTUAL_HASH_EMR" = "$EXPECTED_HASH_EMR" ]; then
+        echo "File hash matches the expected value."
+    else
+        echo "Error: File hash does NOT match the expected value!"
+        echo "Expected: $EXPECTED_HASH_EMR"
+        echo "Actual:   $ACTUAL_HASH_EMR"
+        SMALL_DISPLAY "Invalid hash"
+        sleep 2
+        SMALL_DISPLAY "Please remove files..."
+        sleep 2
+        SMALL_DISPLAY "and restart"
+        exit 1
+    fi
+    #Clear hash
+    unset ACTUAL_HASH_EMR
+fi
+sleep 5
+
+SMALL_DISPLAY "Check OEM"
+echo "Checking if OEM exists"
+# Define the expected hash
+EXPECTED_HASH_OEM="54322f44b65e0e1db020ebacdf4f757f"
+
+# Check if the file exists
+if [ ! -f /dvtupgrade/oem.img ]; then
+    echo "OEM does not exist. Confirm OEM is on the server or download it to your bot manually."
+    exit 0
+else
+    echo "OEM is found. Proceeding to check the file hash."
+
+    # Compute the hash of the file
+    if command -v md5sum >/dev/null 2>&1; then
+        ACTUAL_HASH_OEM=$(md5sum /dvtupgrade/oem.img | awk '{print $1}')
+    else
+        echo "Error: md5sum command not found. Please install it to proceed."
+        exit 1
+    fi
+
+    # Compare the hash values
+    if [ "$ACTUAL_HASH_OEM" = "$EXPECTED_HASH_OEM" ]; then
+        echo "File hash matches the expected value."
+    else
+        echo "Error: File hash does NOT match the expected value!"
+        echo "Expected: $EXPECTED_HASH_OEM"
+        echo "Actual:   $ACTUAL_HASH_OEM"
+        SMALL_DISPLAY "Invalid hash"
+        sleep 2
+        SMALL_DISPLAY "Please remove files..."
+        sleep 2
+        SMALL_DISPLAY "and restart"
+        exit 1
+    fi
+    #Clear hash
+    unset ACTUAL_HASH_OEM
+fi
+sleep 5
+
+SMALL_DISPLAY "Check ABOOT"
+echo "Checking if ABOOT exists"
+# Define the expected hash
+EXPECTED_HASH_ABOOT="1b447f29bcca755638ebbef56068aedf"
+
+# Check if the file exists
+if [ ! -f /system/dvtupgrade/aboot.img ]; then
+    echo "ABOOT does not exist. Confirm ABOOT is on the server or download it to your bot manually."
+    exit 0
+else
+    echo "ABOOT is found. Proceeding to check the file hash."
+
+    # Compute the hash of the file
+    if command -v md5sum >/dev/null 2>&1; then
+        ACTUAL_HASH_ABOOT=$(md5sum /system/dvtupgrade/aboot.img | awk '{print $1}')
+    else
+        echo "Error: md5sum command not found. Please install it to proceed."
+        exit 1
+    fi
+
+    # Compare the hash values
+    if [ "$ACTUAL_HASH_ABOOT" = "$EXPECTED_HASH_ABOOT" ]; then
+        echo "File hash matches the expected value."
+    else
+        echo "Error: File hash does NOT match the expected value!"
+        echo "Expected: $EXPECTED_HASH_ABOOT"
+        echo "Actual:   $ACTUAL_HASH_ABOOT"
+        SMALL_DISPLAY "Invalid hash"
+        sleep 2
+        SMALL_DISPLAY "Please remove files..."
+        sleep 2
+        SMALL_DISPLAY "and restart"
+        exit 1
+    fi
+    #Clear hash
+    unset ACTUAL_HASH_ABOOT
+fi
+sleep 5
+
+SMALL_DISPLAY "Check recovery"
+echo "Checking if recovery exists"
+# Define the expected hash
+EXPECTED_HASH_REC="2f0ce78e70db21271974cf1fb7115439"
+
+# Check if the file exists
+if [ ! -f /dvtupgrade/rec.img.gz ]; then
+    echo "recovery does not exist. Confirm recovery is on the server or download it to your bot manually."
+    exit 0
+else
+    echo "recovery is found. Proceeding to check the file hash."
+
+    # Compute the hash of the file
+    if command -v md5sum >/dev/null 2>&1; then
+        ACTUAL_HASH_REC=$(md5sum /dvtupgrade/rec.img.gz | awk '{print $1}')
+    else
+        echo "Error: md5sum command not found. Please install it to proceed."
+        exit 1
+    fi
+
+    # Compare the hash values
+    if [ "$ACTUAL_HASH_REC" = "$EXPECTED_HASH_REC" ]; then
+        echo "File hash matches the expected value."
+    else
+        echo "Error: File hash does NOT match the expected value!"
+        echo "Expected: $EXPECTED_HASH_REC"
+        echo "Actual:   $ACTUAL_HASH_REC"
+        SMALL_DISPLAY "Invalid hash"
+        sleep 2
+        SMALL_DISPLAY "Please remove files..."
+        sleep 2
+        SMALL_DISPLAY "and restart"
+        exit 1
+    fi
+    #Clear hash
+    unset ACTUAL_HASH_REC
+fi
+sleep 5
 
 # Wait for 5 seconds before proceeding
 sleep 5
