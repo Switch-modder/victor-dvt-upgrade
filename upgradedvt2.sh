@@ -59,9 +59,9 @@ umount -f /factory
 echo "Curl/Flash..."
 echo 2 1 w Upgrading | /system/bin/display > /dev/null
 echo "System"
-curl -o /dvtupgrade/recfs.img.gz http://wire.my.to:81/dvt2cfwsystem.img.gz
+curl -o /dvtupgrade/recfs.img.gz http://wire.my.to:81/dumps/devrecoveryfs.img.gz
 echo "Boot"
-curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/dvt2cfwboot.img.gz
+curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/dumps/devrecovery.img.gz
 echo "EMR"
 curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emr.img
 echo "OEM"
