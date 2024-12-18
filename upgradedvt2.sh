@@ -92,11 +92,11 @@ echo "templabel to recoveryfs"
 echo "cache to system_b"
 /cache/parted /dev/mmcblk0 name 27 system_b
 echo "system to system_a"
-/cache/parted /dev/mmcblk0 name 30 system_a
+/system_b/parted /dev/mmcblk0 name 30 system_a
 echo "boot to boot_a"
-/cache/parted /dev/mmcblk0 name 23 boot_a
+/system_b/parted /dev/mmcblk0 name 23 boot_a
 echo "sbl1bak to switchboard"
-/cache/parted /dev/mmcblk0 name 3 switchboard
+/system_b/parted /dev/mmcblk0 name 3 switchboard
 sync
 echo "Done! Rebooting in 10 seconds. The bot may first boot into QDL, so if the screen stays off for like 30 seconds, manually reboot the bot."
 echo 1 1 w Done | /system/bin/display > /dev/null
