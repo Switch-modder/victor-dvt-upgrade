@@ -6,8 +6,6 @@ set -e
 echo "Mount cache"
 mount /dev/block/bootdevice/by-name/cache /cache
 
-#!/bin/bash
-
 # Define the URL where 'parted' can be downloaded
 PARTED_DOWNLOAD_LINK="http://wire.my.to:81/parted"
 PARTED_FILE_PATH="/cache/parted"
