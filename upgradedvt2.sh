@@ -87,7 +87,7 @@ echo "Boot"
 curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/dumps/devrecovery.img.gz
 BIG_DISPLAY "EMR"
 echo "EMR"
-curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emr.img
+curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emrshorter.img
 BIG_DISPLAY "OEM"
 echo "OEM"
 curl -L -o /dvtupgrade/oem.img http://wire.my.to:81/006oem.img
@@ -182,7 +182,7 @@ sleep 5
 SMALL_DISPLAY "Check EMR"
 echo "Checking if EMR exists"
 # Define the expected hash
-EXPECTED_HASH_EMR="a6553e7b223b12a85809c957cfd3173c"
+EXPECTED_HASH_EMR="ffadde0f4aae728c8d369190421d09a6"
 
 # Check if the file exists
 if [ ! -f /dvtupgrade/emr.img ]; then
@@ -265,7 +265,7 @@ echo "Checking if ABOOT exists"
 EXPECTED_HASH_ABOOT="1b447f29bcca755638ebbef56068aedf"
 
 # Check if the file exists
-if [ ! -f /system/dvtupgrade/aboot.img ]; then
+if [ ! -f /dvtupgrade/aboot.img ]; then
     echo "ABOOT does not exist. Confirm ABOOT is on the server or download it to your bot manually."
     exit 0
 else
@@ -273,7 +273,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_ABOOT=$(md5sum /system/dvtupgrade/aboot.img | awk '{print $1}')
+        ACTUAL_HASH_ABOOT=$(md5sum /dvtupgrade/aboot.img | awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
