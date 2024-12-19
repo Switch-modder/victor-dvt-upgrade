@@ -48,10 +48,10 @@ echo "Modem"
 curl -o /system/dvtupgrade/modem.img http://wire.my.to:81/dvt2modem.img
 SMALL_DISPLAY "Modem" #Internet and bluetooth stuff
 echo "recoveryfs"
-curl -o /system/dvtupgrade/recoveryfs.img.gz http://wire.my.to:81/dumps/devrecoveryfs.img.gz
+curl -o /system/dvtupgrade/recoveryfs.img.gz http://wire.my.to:81/wireos-recoveryfs.img.gz
 SMALL_DISPLAY "Modem" #Internet and bluetooth stuff
 echo "recovery"
-curl -o /system/dvtupgrade/recovery.img.gz http://wire.my.to:81/dumps/devrecovery.img.gz
+curl -o /system/dvtupgrade/recovery.img.gz http://wire.my.to:81/wireos-recovery.img.gz
 
 #Confirm everything is good with a file and hash check
 BIG_DISPLAY "Check files"
@@ -264,7 +264,7 @@ sleep 5
 SMALL_DISPLAY "Check recoveryfs"
 echo "Checking if recoveryfs exists"
 # Define the expected hash
-EXPECTED_HASH_RFS="8d3e92b5aed4b26fbb6b8554030fb5b0"
+EXPECTED_HASH_RFS="841d2cf6f7d9b6b0739f0074462b47e3"
 
 # Check if the file exists
 if [ ! -f /system/dvtupgrade/recoveryfs.img.gz ]; then
@@ -298,7 +298,7 @@ sleep 5
 SMALL_DISPLAY "Check recovery"
 echo "Checking if recovery exists"
 # Define the expected hash
-EXPECTED_HASH_REC="2f0ce78e70db21271974cf1fb7115439"
+EXPECTED_HASH_REC="54713d553be1194e91d530b7c03c7197"
 
 # Check if the file exists
 if [ ! -f /system/dvtupgrade/recovery.img.gz ]; then
