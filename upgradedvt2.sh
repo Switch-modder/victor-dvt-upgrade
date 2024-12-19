@@ -81,10 +81,10 @@ umount -f /factory
 echo "Curl/Flash..."
 BIG_DISPLAY "Recoveryfs"
 echo "Recoveryfs"
-curl -o /dvtupgrade/recfs.img.gz http://wire.my.to:81/dumps/devrecoveryfs.img.gz
+curl -o /dvtupgrade/recfs.img.gz http://wire.my.to:81/wireos-recoveryfs.img.gz
 BIG_DISPLAY "Recovery"
 echo "Boot"
-curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/dumps/devrecovery.img.gz
+curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/wireos-recovery.img.gz
 BIG_DISPLAY "EMR"
 echo "EMR"
 curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emrshorter.img
@@ -101,7 +101,7 @@ sleep 5
 SMALL_DISPLAY "Check RecoveryFS"
 echo "Checking if recoveryfs exists"
 # Define the expected hash
-EXPECTED_HASH_RFS="8d3e92b5aed4b26fbb6b8554030fb5b0"
+EXPECTED_HASH_RFS="841d2cf6f7d9b6b0739f0074462b47e3"
 
 # Check if the file exists
 if [ ! -f /dvtupgrade/recfs.img.gz ]; then
@@ -302,7 +302,7 @@ sleep 5
 SMALL_DISPLAY "Check recovery"
 echo "Checking if recovery exists"
 # Define the expected hash
-EXPECTED_HASH_REC="2f0ce78e70db21271974cf1fb7115439"
+EXPECTED_HASH_REC="54713d553be1194e91d530b7c03c7197"
 
 # Check if the file exists
 if [ ! -f /dvtupgrade/rec.img.gz ]; then
