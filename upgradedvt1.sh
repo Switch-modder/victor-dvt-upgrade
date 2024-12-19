@@ -36,7 +36,7 @@ chmod +rwx /system/dvtupgrade/parted
 echo "Curl/Flash..."
 SMALL_DISPLAY "EMR" #Calibration data
 echo "EMR"
-curl -o /system/dvtupgrade/emr.img http://wire.my.to:81/006emr.img
+curl -o /system/dvtupgrade/emr.img http://wire.my.to:81/006emrshorter.img
 SMALL_DISPLAY "OEM" #Serial number and stuff
 echo "OEM"
 curl -o /system/dvtupgrade/oem.img http://wire.my.to:81/006oem.img
@@ -128,7 +128,7 @@ sleep 5
 SMALL_DISPLAY "Check EMR"
 echo "Checking if EMR exists"
 # Define the expected hash
-EXPECTED_HASH_EMR="a6553e7b223b12a85809c957cfd3173c"
+EXPECTED_HASH_EMR="ffadde0f4aae728c8d369190421d09a6"
 
 # Check if the file exists
 if [ ! -f /system/dvtupgrade/emr.img ]; then
