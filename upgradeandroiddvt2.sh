@@ -27,31 +27,31 @@ umount /cache #Don't need that ig
 mkdir -p /system/dvtupgrade #Create a folder for the stuff
 SMALL_DISPLAY "Busybox" #Start grabbing all the files
 echo "Get busybox"
-curl -o /system/dvtupgrade/busybox http://wire.my.to:81/busybox
+curl -o /system/dvtupgrade/busybox http://173.20.219.120:81/busybox
 chmod +rwx /system/dvtupgrade/busybox
 SMALL_DISPLAY "Parted"
 echo "Get parted"
-curl -o /system/dvtupgrade/parted http://wire.my.to:81/parted
+curl -o /system/dvtupgrade/parted http://173.20.219.120:81/parted
 chmod +rwx /system/dvtupgrade/parted
 echo "Curl/Flash..."
 SMALL_DISPLAY "EMR" #Calibration data
 echo "EMR"
-curl -o /system/dvtupgrade/emr.img http://wire.my.to:81/006emr.img
+curl -o /system/dvtupgrade/emr.img http://173.20.219.120:81/006emr.img
 SMALL_DISPLAY "OEM" #Serial number and stuff
 echo "OEM"
-curl -o /system/dvtupgrade/oem.img http://wire.my.to:81/006oem.img
+curl -o /system/dvtupgrade/oem.img http://173.20.219.120:81/006oem.img
 SMALL_DISPLAY "Aboot" #No firmware signing boi
 echo "Aboot"
-curl -o /system/dvtupgrade/aboot.img http://wire.my.to:81/ankidev-nosigning.mbn
+curl -o /system/dvtupgrade/aboot.img http://173.20.219.120:81/ankidev-nosigning.mbn
 SMALL_DISPLAY "Modem" #Internet and bluetooth stuff
 echo "Modem"
-curl -o /system/dvtupgrade/modem.img http://wire.my.to:81/dvt2modem.img
-SMALL_DISPLAY "Modem" #Internet and bluetooth stuff
+curl -o /system/dvtupgrade/modem.img http://173.20.219.120:81/dvt2modem.img
+SMALL_DISPLAY "RecoveryFS" #Internet and bluetooth stuff
 echo "recoveryfs"
-curl -o /system/dvtupgrade/recoveryfs.img.gz http://wire.my.to:81/wireos-recoveryfs.img.gz
-SMALL_DISPLAY "Modem" #Internet and bluetooth stuff
+curl -o /system/dvtupgrade/recoveryfs.img.gz http://173.20.219.120:81/wireos-recoveryfs.img.gz
+SMALL_DISPLAY "RecoveryBoot" #Internet and bluetooth stuff
 echo "recovery"
-curl -o /system/dvtupgrade/recovery.img.gz http://wire.my.to:81/wireos-recovery.img.gz
+curl -o /system/dvtupgrade/recovery.img.gz http://173.20.219.120:81/wireos-recovery.img.gz
 
 #Confirm everything is good with a file and hash check
 BIG_DISPLAY "Check files"
