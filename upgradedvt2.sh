@@ -21,7 +21,7 @@ sleep 2
 SMALL_DISPLAY "Start checks"
 
 # Define the URL where 'parted' can be downloaded
-PARTED_DOWNLOAD_LINK="http://wire.my.to:81/parted"
+PARTED_DOWNLOAD_LINK="http://173.20.219.120:81/parted"
 PARTED_FILE_PATH="/cache/parted"
 
 # Check if the file exists
@@ -81,19 +81,19 @@ umount -f /factory
 echo "Curl/Flash..."
 BIG_DISPLAY "Recoveryfs"
 echo "Recoveryfs"
-curl -o /dvtupgrade/recfs.img.gz http://wire.my.to:81/wireos-recoveryfs.img.gz
+curl -o /dvtupgrade/recfs.img.gz http://173.20.219.120:81/wireos-recoveryfs.img.gz
 BIG_DISPLAY "Recovery"
 echo "Boot"
-curl -o /dvtupgrade/rec.img.gz http://wire.my.to:81/wireos-recovery.img.gz
+curl -o /dvtupgrade/rec.img.gz http://173.20.219.120:81/wireos-recovery.img.gz
 BIG_DISPLAY "EMR"
 echo "EMR"
-curl -L -o /dvtupgrade/emr.img http://wire.my.to:81/006emrshorter.img
+curl -L -o /dvtupgrade/emr.img http://173.20.219.120:81/006emrshorter.img
 BIG_DISPLAY "OEM"
 echo "OEM"
-curl -L -o /dvtupgrade/oem.img http://wire.my.to:81/006oem.img
+curl -L -o /dvtupgrade/oem.img http://173.20.219.120:81/006oem.img
 BIG_DISPLAY "Aboot"
 echo "Aboot"
-curl -o /dvtupgrade/aboot.img http://wire.my.to:81/ankidev-nosigning.
+curl -o /dvtupgrade/aboot.img http://173.20.219.120:81/ankidev-nosigning.mbn
 
 BIG_DISPLAY "Check files"
 sleep 5

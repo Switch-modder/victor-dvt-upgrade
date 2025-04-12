@@ -71,7 +71,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_PARTED=$(md5sum /system/dvtupgrade/parted | awk '{print $1}')
+        ACTUAL_HASH_PARTED=$(md5sum /system/dvtupgrade/parted | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -84,6 +84,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_PARTED"
         echo "Actual:   $ACTUAL_HASH_PARTED"
+        SMALL_DISPLAY "Failed Parted"
         exit 1
     fi
     #Clear hash
@@ -105,7 +106,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_BUSYBOX=$(md5sum /system/dvtupgrade/busybox | awk '{print $1}')
+        ACTUAL_HASH_BUSYBOX=$(md5sum /system/dvtupgrade/busybox | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -118,6 +119,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_BUSYBOX"
         echo "Actual:   $ACTUAL_HASH_BUSYBOX"
+        SMALL_DISPLAY "Failed Busybox"
         exit 1
     fi
     #Clear hash
@@ -139,7 +141,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_EMR=$(md5sum /system/dvtupgrade/emr.img | awk '{print $1}')
+        ACTUAL_HASH_EMR=$(md5sum /system/dvtupgrade/emr.img | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -152,6 +154,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_EMR"
         echo "Actual:   $ACTUAL_HASH_EMR"
+        SMALL_DISPLAY "Failed EMR"
         exit 1
     fi
     #Clear hash
@@ -173,7 +176,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_OEM=$(md5sum /system/dvtupgrade/oem.img | awk '{print $1}')
+        ACTUAL_HASH_OEM=$(md5sum /system/dvtupgrade/oem.img | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -186,6 +189,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_OEM"
         echo "Actual:   $ACTUAL_HASH_OEM"
+        SMALL_DISPLAY "Failed OEM"
         exit 1
     fi
     #Clear hash
@@ -207,7 +211,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_ABOOT=$(md5sum /system/dvtupgrade/aboot.img | awk '{print $1}')
+        ACTUAL_HASH_ABOOT=$(md5sum /system/dvtupgrade/aboot.img | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -220,6 +224,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_ABOOT"
         echo "Actual:   $ACTUAL_HASH_ABOOT"
+        SMALL_DISPLAY "Failed Aboot"
         exit 1
     fi
     #Clear hash
@@ -241,7 +246,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_MODEM=$(md5sum /system/dvtupgrade/modem.img | awk '{print $1}')
+        ACTUAL_HASH_MODEM=$(md5sum /system/dvtupgrade/modem.img | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -254,6 +259,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_MODEM"
         echo "Actual:   $ACTUAL_HASH_MODEM"
+        SMALL_DISPLAY "Failed Modem"
         exit 1
     fi
     #Clear hash
@@ -275,7 +281,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_RFS=$(md5sum /system/dvtupgrade/recoveryfs.img.gz | awk '{print $1}')
+        ACTUAL_HASH_RFS=$(md5sum /system/dvtupgrade/recoveryfs.img.gz | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -288,6 +294,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_RFS"
         echo "Actual:   $ACTUAL_HASH_RFS"
+        SMALL_DISPLAY "Failed RFS"
         exit 1
     fi
     #Clear hash
@@ -309,7 +316,7 @@ else
 
     # Compute the hash of the file
     if command -v md5sum >/dev/null 2>&1; then
-        ACTUAL_HASH_REC=$(md5sum /system/dvtupgrade/recovery.img.gz | awk '{print $1}')
+        ACTUAL_HASH_REC=$(md5sum /system/dvtupgrade/recovery.img.gz | /system/dvtupgrade/busybox awk '{print $1}')
     else
         echo "Error: md5sum command not found. Please install it to proceed."
         exit 1
@@ -322,6 +329,7 @@ else
         echo "Error: File hash does NOT match the expected value!"
         echo "Expected: $EXPECTED_HASH_REC"
         echo "Actual:   $ACTUAL_HASH_REC"
+        SMALL_DISPLAY "Failed REC"
         exit 1
     fi
     #Clear hash
@@ -332,7 +340,7 @@ sleep 5
 echo "Erasing Switchboard"
 /system/dvtupgrade/busybox dd if=/dev/zero of=/dev/block/bootdevice/by-name/sbl1bak count=1024
 echo "Kill processes"
-lsof | grep /data | /system/busybox awk '{print $2}' | xargs kill
+lsof | grep /data | /system/dvtupgrade/busybox awk '{print $2}' | xargs kill
 sleep 5
 echo "Umount data"
 echo 1 1 w Still going | /system/bin/display > /dev/null
